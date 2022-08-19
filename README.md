@@ -1,0 +1,2 @@
+-- Projeto em NODE.JS com Autênticação em JWT.
+-- O projeto é uma criação de uma API REST com CRUD utilizando o MongoDB.
