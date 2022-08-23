@@ -82,14 +82,13 @@ usuario.post("/login-usuario", async (req, res) => {
   }
 
   try {
+
     const secret = process.env.SECRET;
+
     const token = jwt.sign({
         id: getUsuario._id,
     },
-    secret,
-    {
-      expiresIn: '24h'
-    }
+    secret
     
     )
 
