@@ -10,9 +10,14 @@ contatos.get("/listar-contatos", autenticarToken, async (req, res) => {
   try {
     const contatos = await Contatos.find();
 
-    res.status(200).json(contatos);
+    if (contatos) {
+      res.status(200).json({
+        mensagem: 'Dados trazidos com sucesso.',
+        contatos: contatos
+      });
+    }
   } catch (erro) {
-    res.status(500).json({
+    return res.status(500).json({
       mensagem: "Erro no servidor. Tente novamente.",
     });
   }
@@ -41,19 +46,19 @@ contatos.get("/listar-unico-contato/:id", autenticarToken, async (req, res) => {
 });
 
 contatos.post("/cadastrar-contato", autenticarToken, async (req, res) => {
-  const { nome, sobrenome, telefone, data_nascimento, endereco, email } =
+  const { nome, sobrenome, telefone, dataNascimento, endereco, email } =
     req.body;
 
   if (
     !nome ||
     !sobrenome ||
     !telefone ||
-    !data_nascimento ||
+    !dataNascimento ||
     !endereco ||
     !email
   ) {
     return res.status(422).json({
-      mensagem: `Dados inválidos. ${nome}, ${sobrenome}, ${telefone}, ${data_nascimento}, ${endereco}, ${email} `,
+      mensagem: `Dados inválidos. ${nome}, ${sobrenome}, ${telefone}, ${dataNascimento}, ${endereco}, ${email} `,
     });
   }
 
@@ -61,26 +66,25 @@ contatos.post("/cadastrar-contato", autenticarToken, async (req, res) => {
     nome,
     sobrenome,
     telefone,
-    data_nascimento,
+    dataNascimento,
     endereco,
     email,
   };
 
   const usuarioExiste = await Contatos.findOne({
     telefone: telefone,
-  });
+  }); 
 
   if (usuarioExiste) {
     return res.status(422).json({
       mensagem: "Usuário já existe.",
     });
-    return;
   }
 
   try {
     await Contatos.create(novoContato);
 
-    res.status(201).json({
+    res.status(200).json({
       mensagem: "O contato foi criado com sucesso.",
     });
   } catch (erro) {
@@ -88,20 +92,18 @@ contatos.post("/cadastrar-contato", autenticarToken, async (req, res) => {
       mensagem: "Erro no servidor. Tente novamente!",
     });
   }
-
-  res.status(200).json({ novoContato });
 });
 
 contatos.put("/editar-contato/:id", autenticarToken, async (req, res) => {
   const id = req.params.id;
-  const { nome, sobrenome, telefone, data_nascimento, endereco, email } =
+  const { nome, sobrenome, telefone, dataNascimento, endereco, email } =
     req.body;
 
   const contato = {
     nome,
     sobrenome,
     telefone,
-    data_nascimento,
+    dataNascimento,
     endereco,
     email,
   };

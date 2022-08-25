@@ -89,7 +89,6 @@ usuario.post("/login-usuario", async (req, res) => {
         id: getUsuario._id,
     },
     secret
-    
     )
 
     res.status(200).json({

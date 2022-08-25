@@ -4,9 +4,9 @@ const Contatos = mongoose.model('Contatos', {
     nome: String,
     sobrenome: String,
     data_nascimento: String,
-    telefone: Number,
+    telefone: String,
     endereco: String,
     email: String
 });
 
-module.exports = Contatos
+module.exports = Contatos 
